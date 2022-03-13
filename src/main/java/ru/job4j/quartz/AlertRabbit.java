@@ -3,11 +3,9 @@ package ru.job4j.quartz;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import javax.security.sasl.SaslException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.Properties;
 
 import static org.quartz.JobBuilder.*;
@@ -19,21 +17,14 @@ public class AlertRabbit {
     public static void main(String[] args) {
 
         Connection cn;
+        Properties properties = readProperties("rabbit.properties");
 
-        try (InputStream in = AlertRabbit.class.getClassLoader()
-                .getResourceAsStream("rabbit.properties")) {
-            Properties config = new Properties();
-            config.load(in);
-            Class.forName(config.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
-            );
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
         try {
+            Class.forName(properties.getProperty("driver-class-name"));
+            cn = DriverManager.getConnection(
+                    properties.getProperty("url"),
+                    properties.getProperty("username"),
+                    properties.getProperty("password"));
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
@@ -42,7 +33,7 @@ public class AlertRabbit {
                     .usingJobData(data)
                     .build();
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(getJobInterval())
+                    .withIntervalInSeconds(getJobInterval(properties))
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
@@ -51,22 +42,24 @@ public class AlertRabbit {
             scheduler.scheduleJob(job, trigger);
             Thread.sleep(10000);
             scheduler.shutdown();
-        } catch (Exception se) {
-            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public static int getJobInterval() {
-        int rls;
+    private static Properties readProperties(String fileName) {
+        Properties properties = new Properties();
         try (InputStream in = AlertRabbit.class.getClassLoader()
-                .getResourceAsStream("rabbit.properties")) {
-            Properties jobProperties = new Properties();
-            jobProperties.load(in);
-            rls = Integer.parseInt(jobProperties.getProperty("rabbit.interval"));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+                .getResourceAsStream(fileName)) {
+            properties.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return rls;
+        return properties;
+    }
+
+    public static int getJobInterval(Properties jobProperties) {
+        return Integer.parseInt(jobProperties.getProperty("rabbit.interval"));
     }
 
     public static class Rabbit implements Job {
