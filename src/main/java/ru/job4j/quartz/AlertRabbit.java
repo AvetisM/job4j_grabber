@@ -16,15 +16,12 @@ public class AlertRabbit {
 
     public static void main(String[] args) {
 
-        Connection cn;
         Properties properties = readProperties("rabbit.properties");
-
-        try {
+        try (Connection cn = DriverManager.getConnection(
+                properties.getProperty("url"),
+                properties.getProperty("username"),
+                properties.getProperty("password"))) {
             Class.forName(properties.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
-                    properties.getProperty("url"),
-                    properties.getProperty("username"),
-                    properties.getProperty("password"));
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
