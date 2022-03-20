@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 public class HabrCareerDateTimeParser implements DateTimeParser {
     @Override
     public LocalDateTime parse(String parse) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return LocalDateTime.parse(parse, formatter);
+        return LocalDateTime.parse(parse, DateTimeFormatter.ISO_DATE_TIME);
     }
 }
