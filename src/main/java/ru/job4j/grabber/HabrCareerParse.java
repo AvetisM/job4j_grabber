@@ -37,21 +37,21 @@ public class HabrCareerParse implements Parse {
     }
 
     private static String retrieveDescription(String link) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         Connection connection = Jsoup.connect(link);
         try {
             Document document = connection.get();
             Elements rows = document.select(".job_show_description__vacancy_description");
             rows.forEach(row -> {
                 Element descriptionElement = row.child(0);
-                stringBuffer
+                stringBuilder
                         .append(descriptionElement.text())
                         .append(System.lineSeparator());
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 
     @Override
