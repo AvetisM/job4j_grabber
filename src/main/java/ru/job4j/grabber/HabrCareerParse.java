@@ -25,11 +25,8 @@ public class HabrCareerParse implements Parse {
     }
 
     public void parse() {
-        for (int i = 1; i <= PAGE_COUNT; i++) {
-            String pageLink = String.format(PAGE_TEMPLE, SOURCE_LINK, i);
-            List<Post> postList = list(pageLink);
-            postList.forEach(System.out::println);
-        }
+        List<Post> postList = list(SOURCE_LINK);
+        postList.forEach(System.out::println);
     }
 
     public static void main(String[] args) {
@@ -71,10 +68,13 @@ public class HabrCareerParse implements Parse {
     public List<Post> list(String link) {
         List<Post> rls = new ArrayList<>();
         try {
-            Connection connection = Jsoup.connect(link);
-            Document document = connection.get();
-            Elements rows = document.select(".vacancy-card__inner");
-            rows.forEach(row -> rls.add(retrievePost(row)));
+            for (int i = 1; i <= PAGE_COUNT; i++) {
+                String pageLink = String.format(PAGE_TEMPLE, link, i);
+                Connection connection = Jsoup.connect(pageLink);
+                Document document = connection.get();
+                Elements rows = document.select(".vacancy-card__inner");
+                rows.forEach(row -> rls.add(retrievePost(row)));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
