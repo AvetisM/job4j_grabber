@@ -14,9 +14,14 @@ from  company as c
  on c.id = p.company_id
 group by
  c.name
-order by
- person_amount desc
-limit 1; 
- 
+having count(p.name) = (
+	select 
+	 count(person.name) as p_amount 
+	from person 
+	group by 
+	 person.company_id 
+	order by 
+	 p_amount desc 
+	limit 1) 
 
  
