@@ -3,6 +3,8 @@ package ru.job4j.cache;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class DirFileCache extends AbstractCache<String, String> {
 
@@ -12,29 +14,18 @@ public class DirFileCache extends AbstractCache<String, String> {
         this.cachingDir = cachingDir;
     }
 
-    public void put(String key) {
-        super.put(key, load(key));
-    }
-
-    @Override
-    public String get(String key) {
-        String rls = super.get(key);
-        if (rls == null) {
-            put(key);
-        }
-        return super.get(key);
+    public boolean fileExists(String key) {
+       return  Files.exists(Path.of(cachingDir, key));
     }
 
     @Override
     protected String load(String key) {
-        StringBuilder stringBuilder = new StringBuilder();
-        try (BufferedReader rd = new BufferedReader(new FileReader(cachingDir + "/" + key))) {
-            for (String line = rd.readLine(); line != null; line = rd.readLine()) {
-                stringBuilder.append(line).append(System.lineSeparator());
-            }
+        String rls = null;
+        try {
+            rls = Files.readString(Path.of(cachingDir, key));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return stringBuilder.toString();
+        return rls;
     }
 }
