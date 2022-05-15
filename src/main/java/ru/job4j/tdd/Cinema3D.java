@@ -7,16 +7,15 @@ import java.util.function.Predicate;
 public class Cinema3D implements Cinema {
     @Override
     public List<Session> find(Predicate<Session> filter) {
-        return null;
+        throw new IllegalArgumentException("Не верный аргумент");
     }
 
     @Override
     public Ticket buy(Account account, int row, int column, Calendar date) {
-        return null;
+        throw new IllegalArgumentException("Не верный аргумент");
     }
 
     @Override
     public void add(Session session) {
-
     }
 }
