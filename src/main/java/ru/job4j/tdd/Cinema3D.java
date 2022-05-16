@@ -12,7 +12,7 @@ public class Cinema3D implements Cinema {
 
     @Override
     public Ticket buy(Account account, int row, int column, Calendar date) {
-        throw new IllegalArgumentException("Не верный аргумент");
+        return null;
     }
 
     @Override
