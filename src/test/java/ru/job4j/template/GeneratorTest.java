@@ -1,5 +1,6 @@
 package ru.job4j.template;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,13 +16,15 @@ public class GeneratorTest {
         template = "I am a ${name}, Who are ${subject}? ";
     }
 
+    @Ignore
     @Test
     public void whenCorrectKeys() {
         Map<String, String> args = new HashMap<>();
         args.put("name", "Petr Arsentev");
         args.put("subject", "you");
         PhraseGenerator phraseGenerator = new PhraseGenerator();
-        phraseGenerator.produce(template, args);
+        String actual = phraseGenerator.produce(template, args);
+        Assert.assertEquals("I am a Petr Arsentev, Who are you?", actual);
     }
 
     @Ignore
