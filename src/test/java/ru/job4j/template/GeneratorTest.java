@@ -15,8 +15,7 @@ public class GeneratorTest {
         template = "I am a ${name}, Who are ${subject}? ";
     }
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenCorrectKeys() {
         Map<String, String> args = new HashMap<>();
         args.put("name", "Petr Arsentev");
