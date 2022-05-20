@@ -1,9 +1,9 @@
 package ru.job4j.ood.srp.model;
 
 public class Driver {
+
     private String name;
-    private Car car;
-    private String carNumber;
+    private double salaryPerHour;
 
     public String getName() {
         return name;
@@ -13,19 +13,16 @@ public class Driver {
         this.name = name;
     }
 
-    public Car getCar() {
-        return car;
+    public void setSalaryPerHour(double salaryPerHour) {
+        this.salaryPerHour = salaryPerHour;
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public double getSalaryPerHour() {
+        return salaryPerHour;
     }
 
-    public String getCarNumber() {
-        return carNumber;
+    public double getSalary(int hours) {
+        return this.salaryPerHour * hours;
     }
 
-    public void setCarNumber(String carNumber) {
-        this.carNumber = carNumber;
-    }
 }
