@@ -4,10 +4,15 @@ import java.util.function.Predicate;
 
 public class ReportAccountant implements Report {
 
+    private static final double COEFFICIENT = 0.9;
     private Store store;
 
     public ReportAccountant(Store store) {
         this.store = store;
+    }
+
+    public static double getCOEFFICIENT() {
+        return COEFFICIENT;
     }
 
     @Override
@@ -26,6 +31,6 @@ public class ReportAccountant implements Report {
     }
 
     private double calculateSalary(double salary) {
-        return salary * 0.9;
+        return salary * COEFFICIENT;
     }
 }

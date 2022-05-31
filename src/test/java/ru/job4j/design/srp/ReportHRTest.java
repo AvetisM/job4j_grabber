@@ -20,16 +20,19 @@ public class ReportHRTest {
         store.add(worker);
         store.add(worker1);
         store.add(worker2);
-        List<Employee> employeeList = List.of(worker2, worker, worker1);
         Report report = new ReportHR(store);
         StringBuilder expect = new StringBuilder()
                 .append("Name; Salary;")
                 .append(System.lineSeparator());
-        for (Employee employee : employeeList) {
-            expect.append(employee.getName()).append(";")
-                    .append(employee.getSalary()).append(";")
-                    .append(System.lineSeparator());
-        }
+        expect.append(worker2.getName()).append(";")
+                .append(worker2.getSalary()).append(";")
+                .append(System.lineSeparator());
+        expect.append(worker.getName()).append(";")
+                .append(worker.getSalary()).append(";")
+                .append(System.lineSeparator());
+        expect.append(worker1.getName()).append(";")
+                .append(worker1.getSalary()).append(";")
+                .append(System.lineSeparator());
         assertThat(report.generate(em -> true), is(expect.toString()));
     }
 
