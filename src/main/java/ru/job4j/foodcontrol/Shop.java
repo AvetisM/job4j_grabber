@@ -11,7 +11,7 @@ public class Shop implements Store {
     public boolean add(Food food) {
         boolean validated = validate(food);
         if (validated) {
-            if (getPercentLifeExpired(food) > 75) {
+            if (getPercentLifeExpired(food) > PercentagesLifeExpired.PERCENT_75.getPercent()) {
                 food.setDiscount(50);
             }
             goods.add(food);
@@ -22,7 +22,8 @@ public class Shop implements Store {
     @Override
     public boolean validate(Food food) {
         double percent = getPercentLifeExpired(food);
-        return percent >= 25 && percent < 100;
+        return percent >= PercentagesLifeExpired.PERCENT_25.getPercent()
+                && percent < PercentagesLifeExpired.PERCENT_100.getPercent();
     }
 
     @Override

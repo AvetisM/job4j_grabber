@@ -1,8 +1,6 @@
 package ru.job4j.foodcontrol;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Warehouse implements Store {
@@ -20,7 +18,7 @@ public class Warehouse implements Store {
 
     @Override
     public boolean validate(Food food) {
-        return getPercentLifeExpired(food) < 25;
+        return getPercentLifeExpired(food) < PercentagesLifeExpired.PERCENT_25.getPercent();
     }
 
     @Override

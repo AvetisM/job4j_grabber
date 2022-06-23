@@ -3,7 +3,7 @@ package ru.job4j.foodcontrol;
 import java.util.List;
 
 public class ControlQuality {
-    List<Store> storeList;
+    private List<Store> storeList;
 
     public ControlQuality(List<Store> storeList) {
         this.storeList = storeList;
