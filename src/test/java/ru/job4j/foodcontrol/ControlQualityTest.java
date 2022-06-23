@@ -8,42 +8,96 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class ControlQualityTest {
 
     private List<Store> storeList;
+    private Trash trashStore;
+    private Shop shopStore;
+    private Warehouse warehouseStore;
 
     @Before
     public void initData() {
+        trashStore = new Trash();
+        shopStore = new Shop();
+        warehouseStore = new Warehouse();
+
         storeList = new ArrayList<>();
-        storeList.add(new Trash());
-        storeList.add(new Warehouse());
-        storeList.add(new Shop());
+        storeList.add(trashStore);
+        storeList.add(shopStore);
+        storeList.add(warehouseStore);
     }
 
     @Test
     public void whenTrash() {
-        LocalDate createDate = LocalDate.of(2022, 5, 5);
-        LocalDate expiryDate = LocalDate.of(2022, 6, 17);
-        Food food = new Food("food", createDate, expiryDate, 100, 0);
+        LocalDate now = LocalDate.now();
+        LocalDate expiryDate = now.minusDays(1);
+        Food food = new Food("food", now, expiryDate, 100, 0);
         List<Food> foodList = List.of(food);
         ControlQuality controlQuality = new ControlQuality(storeList);
         controlQuality.sortGoods(foodList);
-        Store trash =  storeList.get(0);
-        Food expected = trash.getGoods().get(0);
-        Assert.assertEquals(expected, food);
+        assertThat(trashStore.getGoods(), is(List.of(food)));
     }
 
     @Test
     public void whenWarehouse() {
-        LocalDate createDate = LocalDate.of(2022, 5, 5);
-        LocalDate expiryDate = LocalDate.of(2022, 6, 30);
+        LocalDate now = LocalDate.now();
+        LocalDate expiryDate = now.plusDays(30);
+        Food food = new Food("food", now, expiryDate, 100, 0);
+        List<Food> foodList = List.of(food);
+        ControlQuality controlQuality = new ControlQuality(storeList);
+        controlQuality.sortGoods(foodList);
+        assertThat(warehouseStore.getGoods(), is(List.of(food)));
+    }
+
+    @Test
+    public void whenShop() {
+        LocalDate now = LocalDate.now();
+        LocalDate createDate = now.minusDays(20);
+        LocalDate expiryDate = now.plusDays(10);
         Food food = new Food("food", createDate, expiryDate, 100, 0);
         List<Food> foodList = List.of(food);
         ControlQuality controlQuality = new ControlQuality(storeList);
         controlQuality.sortGoods(foodList);
-       /* Store warehouse = storeList.get(0);
-        Food expected = warehouse.getGoods().get(0);
-        Assert.assertEquals(expected, food);*/
+        assertThat(shopStore.getGoods(), is(List.of(food)));
     }
 
+    @Test
+    public void whenShopAndSetDiscount() {
+        LocalDate now = LocalDate.now();
+        LocalDate createDate = now.minusDays(20);
+        LocalDate expiryDate = now.plusDays(5);
+        Food food = new Food("food", createDate, expiryDate, 100, 0);
+        List<Food> foodList = List.of(food);
+        ControlQuality controlQuality = new ControlQuality(storeList);
+        controlQuality.sortGoods(foodList);
+        Assert.assertEquals(50.0, shopStore.getGoods().get(0).getDiscount(), 0.00);
+    }
+
+    @Test
+    public void whenSeveralGoods() {
+        LocalDate now = LocalDate.now();
+
+        LocalDate createDate = now.minusDays(20);
+        LocalDate expiryDate = now.plusDays(5);
+        Food milk = new Milk("food", createDate, expiryDate, 100, 0);
+
+        createDate = now;
+        expiryDate = now.plusDays(30);
+        Food bread = new Bread("food", createDate, expiryDate, 100, 0);
+
+        createDate = now;
+        expiryDate = now.minusDays(1);
+        Food bread2 = new Bread("food", createDate, expiryDate, 100, 0);
+
+        List<Food> foodList = List.of(milk, bread, bread2);
+        ControlQuality controlQuality = new ControlQuality(storeList);
+        controlQuality.sortGoods(foodList);
+
+        assertThat(trashStore.getGoods(), is(List.of(bread2)));
+        assertThat(warehouseStore.getGoods(), is(List.of(bread)));
+        assertThat(shopStore.getGoods(), is(List.of(milk)));
+    }
 }
