@@ -8,11 +8,4 @@ public interface VehicleStore {
 
     List<Vehicle> getVehicles();
 
-    int getCarSpaceNumber();
-
-    int getTruckSpaceNumber();
-
-    default boolean checkParkingSpace(Vehicle vehicle, int carSpaceNumber, int trucksSpaceNumber) {
-        return false;
-    }
 }

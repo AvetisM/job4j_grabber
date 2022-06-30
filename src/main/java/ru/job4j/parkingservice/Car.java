@@ -5,19 +5,18 @@ import java.util.Objects;
 public class Car implements Vehicle {
 
     private String name;
-    private int parkingSpaceNumber;
+    public static final int SIZE = 1;
 
     public Car(String name) {
         this.name = name;
-        this.parkingSpaceNumber = 1;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getParkingSpaceNumber() {
-        return parkingSpaceNumber;
     }
 
     @Override
@@ -38,7 +37,8 @@ public class Car implements Vehicle {
     }
 
     @Override
-    public boolean isTruck() {
-        return this.parkingSpaceNumber > 1;
+    public int getSize() {
+        return SIZE;
     }
+
 }
