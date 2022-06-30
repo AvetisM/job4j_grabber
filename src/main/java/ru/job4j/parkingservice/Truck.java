@@ -17,7 +17,7 @@ public class Truck implements Vehicle {
     }
 
     public void setSize(int size) {
-        if (size < 2) {
+        if (size <= Car.SIZE) {
             throw new IllegalArgumentException("Truck size must be more than 1");
         }
         this.size = size;
