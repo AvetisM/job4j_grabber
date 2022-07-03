@@ -18,24 +18,19 @@ public class CityParking implements VehicleStore {
     @Override
     public boolean add(Vehicle vehicle) {
         boolean rls = false;
-        if (vehicle.getSize() == Car.SIZE) {
-            if (carSpaceNumber - Car.SIZE >= 0) {
-                vehicles.add(vehicle);
-                carSpaceNumber -= Car.SIZE;
-                rls = true;
-            }
-        } else {
-            int vehicleSize = vehicle.getSize();
-            if (carSpaceNumber + truckSpaceNumber - vehicleSize >= 0) {
-                vehicles.add(vehicle);
-                int minSize = Math.min(truckSpaceNumber, vehicleSize);
-                truckSpaceNumber -= minSize;
-                vehicleSize -= minSize;
-                if (vehicleSize > 0) {
-                    carSpaceNumber -= vehicleSize;
-                }
-                rls = true;
-            }
+        int vehicleSize = vehicle.getSize();
+        if (vehicleSize == Car.SIZE && carSpaceNumber - Car.SIZE >= 0) {
+            vehicles.add(vehicle);
+            carSpaceNumber -= Car.SIZE;
+            rls = true;
+        } else if (vehicleSize > Car.SIZE  && truckSpaceNumber > 0) {
+            vehicles.add(vehicle);
+            truckSpaceNumber -= 1;
+            rls = true;
+        } else if (vehicleSize > Car.SIZE && carSpaceNumber - vehicleSize >= 0) {
+            vehicles.add(vehicle);
+            carSpaceNumber -= vehicleSize;
+            rls = true;
         }
         return rls;
     }

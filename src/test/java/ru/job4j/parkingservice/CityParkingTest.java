@@ -29,20 +29,21 @@ public class CityParkingTest {
 
     @Test
     public void whenNotEnoughSpace() {
-        VehicleStore vehicleStore = new CityParking(3, 3);
-        Vehicle truck1 = new Truck("truck1", 3);
-        Vehicle truck2 = new Truck("truck2", 3);
-        Vehicle car1 = new Car("car");
-        vehicleStore.add(truck1);
-        vehicleStore.add(truck2);
-        assertFalse(vehicleStore.add(car1));
+        VehicleStore vehicleStore = new CityParking(1, 1);
+        assertTrue(vehicleStore.add(new Truck("truck1", 3)));
+        assertTrue(vehicleStore.add(new Car("car1")));
+        assertFalse(vehicleStore.add(new Truck("truck2", 3)));
+        assertFalse(vehicleStore.add(new Car("car2")));
     }
 
     @Test
     public void whenNotEnoughSpaceForTruck() {
-        VehicleStore vehicleStore = new CityParking(2, 0);
+        VehicleStore vehicleStore = new CityParking(2, 1);
         Vehicle truck1 = new Truck("truck1", 3);
-        assertFalse(vehicleStore.add(truck1));
+        Vehicle truck2 = new Truck("truck2", 3);
+        assertTrue(vehicleStore.add(truck1));
+        assertFalse(vehicleStore.add(truck2));
+
     }
 
     @Test
