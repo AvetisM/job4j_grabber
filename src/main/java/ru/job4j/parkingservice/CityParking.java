@@ -23,7 +23,7 @@ public class CityParking implements VehicleStore {
             vehicles.add(vehicle);
             carSpaceNumber -= Car.SIZE;
             rls = true;
-        } else if (vehicleSize > Car.SIZE  && truckSpaceNumber > 0) {
+        } else if (vehicleSize > Car.SIZE  && truckSpaceNumber >= Car.SIZE) {
             vehicles.add(vehicle);
             truckSpaceNumber -= 1;
             rls = true;
