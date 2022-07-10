@@ -13,12 +13,19 @@ public class AddItemAction implements MenuAction {
     public boolean execute(Menu menu, MenuPrinter menuPrinter,
                            ActionDelegate actionDelegate, Scanner scanner) {
         System.out.println("=== Добавление задания ===");
-        System.out.println("Укажите имя задания: ");
-        String itemName = scanner.nextLine();
         System.out.println("Укажите группу задания или оставьте пустой: ");
         String parentName = scanner.nextLine();
-        menu.add(parentName, itemName, actionDelegate);
-        System.out.println("Задание " + itemName + " добавлено.");
+        System.out.println("Укажите имя задания: ");
+        String itemName = scanner.nextLine();
+       //if (!parentName.isEmpty()) {
+            menu.add(Menu.ROOT, parentName, actionDelegate);
+            System.out.println("Группа " + parentName + " добавлена.");
+        /*} else {
+            System.out.println("Укажите имя задания: ");
+            String itemName = scanner.nextLine();
+            menu.add(parentName, itemName, actionDelegate);
+            System.out.println("Задание " + itemName + " добавлено.");
+        }*/
         return true;
     }
 }
