@@ -18,6 +18,11 @@ public class Trash implements Store {
     }
 
     @Override
+    public void removeAllGoods() {
+        goods.clear();
+    }
+
+    @Override
     public boolean validate(Food food) {
         return getPercentLifeExpired(food) >= PercentagesLifeExpired.PERCENT_100.getPercent();
     }

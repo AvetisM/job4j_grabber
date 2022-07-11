@@ -1,5 +1,6 @@
 package ru.job4j.foodcontrol;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlQuality {
@@ -18,5 +19,19 @@ public class ControlQuality {
                 }
             }
         }
+    }
+
+    public void resortGoods() {
+        List<Food> sortedGoods = getGoodsFromStore();
+        sortGoods(sortedGoods);
+    }
+
+    private List<Food> getGoodsFromStore() {
+        List<Food> sortedGoods = new ArrayList<>();
+        for (Store store: storeList) {
+            sortedGoods.addAll(store.getGoods());
+            store.removeAllGoods();
+        }
+        return sortedGoods;
     }
 }

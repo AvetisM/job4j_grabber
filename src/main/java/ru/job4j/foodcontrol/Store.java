@@ -7,6 +7,8 @@ public interface Store {
 
     boolean add(Food food);
 
+    void removeAllGoods();
+
     List<Food> getGoods();
 
     boolean validate(Food food);

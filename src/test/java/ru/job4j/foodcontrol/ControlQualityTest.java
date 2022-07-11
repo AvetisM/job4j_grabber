@@ -100,4 +100,35 @@ public class ControlQualityTest {
         assertThat(warehouseStore.getGoods(), is(List.of(bread)));
         assertThat(shopStore.getGoods(), is(List.of(milk)));
     }
+
+    @Test
+    public void whenResortGoods() {
+        LocalDate now = LocalDate.now();
+
+        LocalDate createDate = now.minusDays(20);
+        LocalDate expiryDate = now.plusDays(5);
+        Food milk = new Milk("food", createDate, expiryDate, 100, 0);
+
+        createDate = now;
+        expiryDate = now.plusDays(30);
+        Food bread = new Bread("food", createDate, expiryDate, 100, 0);
+
+        createDate = now;
+        expiryDate = now.minusDays(1);
+        Food bread2 = new Bread("food", createDate, expiryDate, 100, 0);
+
+        List<Food> foodList = List.of(milk, bread, bread2);
+        ControlQuality controlQuality = new ControlQuality(storeList);
+        controlQuality.sortGoods(foodList);
+
+        assertThat(trashStore.getGoods(), is(List.of(bread2)));
+        assertThat(warehouseStore.getGoods(), is(List.of(bread)));
+        assertThat(shopStore.getGoods(), is(List.of(milk)));
+
+        milk.setExpiryDate(createDate);
+        controlQuality.resortGoods();
+        assertThat(trashStore.getGoods(), is(List.of(bread2, milk)));
+        assertThat(shopStore.getGoods(), is(List.of()));
+
+    }
 }

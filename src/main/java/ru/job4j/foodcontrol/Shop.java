@@ -20,6 +20,11 @@ public class Shop implements Store {
     }
 
     @Override
+    public void removeAllGoods() {
+        goods.clear();
+    }
+
+    @Override
     public boolean validate(Food food) {
         double percent = getPercentLifeExpired(food);
         return percent >= PercentagesLifeExpired.PERCENT_25.getPercent()
