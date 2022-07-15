@@ -20,7 +20,7 @@ public class TODOApp {
         boolean run = true;
         while (run) {
             showMenu(actions);
-            int itemNumber = scanner.nextInt();
+            int itemNumber = Integer.parseInt(scanner.nextLine());
             if (itemNumber < 0 || itemNumber >= actions.size()) {
                 System.out.println("Вы ввели не правильную команду");
                 continue;
