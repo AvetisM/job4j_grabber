@@ -1,13 +1,11 @@
 package ru.job4j.ood.isp.menu;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class SimpleMenuTest {
 
@@ -54,5 +52,28 @@ public class SimpleMenuTest {
                 ),
                 menu.select("Сходить в магазин").get()
         );
+    }
+
+    @Test
+    public void whenMenuItemPrinterOutput() {
+        Menu menu = new SimpleMenu();
+        menu.add(Menu.ROOT, "Сходить в магазин", STUB_ACTION);
+        menu.add(Menu.ROOT, "Покормить собаку", STUB_ACTION);
+        menu.add("Сходить в магазин", "Купить продукты", STUB_ACTION);
+        menu.add("Купить продукты", "Купить хлеб", STUB_ACTION);
+        menu.add("Купить продукты", "Купить молоко", STUB_ACTION);
+        MenuPrinter menuPrinter = new MenuItemPrinter();
+        StringBuilder expect = new StringBuilder()
+                .append("  1.Сходить в магазин")
+                .append(System.lineSeparator())
+                .append("    1.1.Купить продукты")
+                .append(System.lineSeparator())
+                .append("      1.1.1.Купить хлеб")
+                .append(System.lineSeparator())
+                .append("      1.1.2.Купить молоко")
+                .append(System.lineSeparator())
+                .append("  2.Покормить собаку")
+                .append(System.lineSeparator());
+        assertThat(expect.toString(), is(menuPrinter.getMenuPrinterText(menu)));
     }
 }
